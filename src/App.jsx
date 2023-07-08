@@ -35,17 +35,17 @@ function App() {
       telefone: '',
       celular: '',
       celularWhats: '',
-      profissao, //
+      profissao: '', //
       empresa: '',
       salario: '',
-      empregoAtual,
+      empregoAtual: '',
       pretencaoMinima: '',
       pretencaoMaxima: '',
       habilidades: ''
     })
 
   // Estado da janela para saber se deve fechar ou abrir 
-  const abrirFecharIncluir = () => {
+  const abrirFecharModalIncluir = () => {
     setModalIncluir(!modalIncluir);
   }
 
@@ -53,10 +53,10 @@ function App() {
   // que será informado nos inputs
   // e o setCandidatoSelecionado para atualizar o estado
   const handleChange = e => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
     setCadastroSelecionado({
       ...cadastroSelecionado,
-      [name]: value
+      [name]: type === 'checkbox' ? (checked ? 1 : 0) : value // Tratativa para componentes que são checkbox)
     });
     console.log(cadastroSelecionado);
   }
@@ -71,6 +71,21 @@ function App() {
       });
   }
 
+  // Requisição Post com o axios
+  const postCandidato = async () => {
+    delete cadastroSelecionado.idCadastro;
+    cadastroSelecionado.salario = parseFloat(cadastroSelecionado.salario);
+    cadastroSelecionado.pretencaoMinima = parseFloat(cadastroSelecionado.pretencaoMinima);
+    cadastroSelecionado.pretencaoMaxima = parseFloat(cadastroSelecionado.pretencaoMaxima);
+    await axios.post(baseUrl, cadastroSelecionado)
+      .then(response => {
+        setData(data.concat(response.data));
+        abrirFecharModalIncluir();
+      }).catch(error => {
+        console.log(error);
+      })
+  }
+
   // useEffect lida com efeitos colaterais
   useEffect(() => {
     getCandidatos();
@@ -82,7 +97,7 @@ function App() {
       <h3>Jobby Demo 01</h3>
       <header id='HeaderId'>
         <img id='AddCadastroLogo' src={logoCadastro} alt='Cadastro' />
-        <button className='btn btn-success'>Incluir Novo Candidato</button>
+        <button className='btn btn-success' onClick={() => abrirFecharModalIncluir()}>Incluir Novo Candidato</button>
       </header>
       <table className='table table-bordered table-hover'>
         <thead>
@@ -129,7 +144,7 @@ function App() {
             <input type='number' className='form-control' name='cpf' onChange={handleChange}></input>
             <label>Data Nascimento</label>
             <br />
-            <input type='date' className='form-control' name='dataNascimento' onChange={handleChange}></input>
+            <input type='text' className='form-control' name='dataNascimento' onChange={handleChange}></input>
             <label>Sexo</label>
             <br />
             <input type='text' size="1" className='form-control' name='sexo' onChange={handleChange}></input>
@@ -160,9 +175,10 @@ function App() {
             <label>Celular</label>
             <br />
             <input type='tel' className='form-control' name='celular' onChange={handleChange}></input>
-            <label>WhatsApp?</label>
+            <label>WhatsApp?&nbsp;</label>
+            <input type='checkbox' className='form-check-input' name='celularWhats' onChange={handleChange}></input>
             <br />
-            <input type='checkbox' className='form-control' name='celularWhats' onChange={handleChange}></input>
+            <br />
             <label>Profissão</label>
             <br />
             <input type='text' className='form-control' name='profissao' onChange={handleChange}></input>
@@ -172,15 +188,16 @@ function App() {
             <label>Salário</label>
             <br />
             <input type='number' className='form-control' name='salario' onChange={handleChange}></input>
-            <label>Emprego Atual?</label>
+            <label>Emprego Atual?&nbsp;</label>
+            <input type='checkbox' className='form-check-input' name='empregoAtual' onChange={handleChange}></input>
             <br />
-            <input type='checkbox' className='form-control' name='empregoAtual' onChange={handleChange}></input>
+            <br />
             <label>Pretenção Salarial Mínima</label>
             <br />
             <input type='number' className='form-control' name='pretencaoMinima' onChange={handleChange}></input>
             <label>Pretenção Salarial Máxima</label>
             <br />
-            <input type='number' className='form-control' name='pretencaoMaxima' onChange={handleChange}></input><label>Nome</label>
+            <input type='number' className='form-control' name='pretencaoMaxima' onChange={handleChange}></input>
             <label>Habilidades</label>
             <br />
             <input type='text' className='form-control' name='habilidades' onChange={handleChange}></input>
@@ -188,8 +205,8 @@ function App() {
         </ModalBody>
 
         <ModalFooter>
-          <button className='btn btn-primary m-1'>Incluir</button>
-          <button className='btn btn-danger m-1'>Cancelar</button>
+          <button className='btn btn-primary m-1' onClick={() => postCandidato()} >Incluir</button>
+          <button className='btn btn-danger m-1' onClick={() => abrirFecharModalIncluir()}>Cancelar</button>
         </ModalFooter>
       </Modal>
 
