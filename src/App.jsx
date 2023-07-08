@@ -1,10 +1,33 @@
 import './App.css';
 import axios from 'axios';
-import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
-import logoCadastro from './assets/cadastro.png'
+import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import logoCadastro from './assets/cadastro.png';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
 
 function App() {
+
+  // URL base
+  const baseUrl = "http://localhost:8080/cadastros";
+
+  // useState para tratar a mudança de estado feito na aplicação
+  const [data, setData] = useState([]);
+
+  // Requisição Get com o axios
+  const getCandidatos = async () => {
+    await axios.get(baseUrl)
+      .then(response => {
+        setData(response.data)
+      }).catch(error => {
+        console.log(error);
+      });
+  }
+
+  // useEffect lida com efeitos colaterais
+  useEffect(() => {
+    getCandidatos();
+  })
 
   return (
     <>
@@ -28,7 +51,21 @@ function App() {
           </tr>
         </thead>
         <tbody>
-          {/*TODO*/}
+          {data.map((cadastro, index) =>
+            <tr key={index}>
+              <td>{cadastro.idCadastro}</td>
+              <td>{cadastro.nome}</td>
+              <td>{cadastro.cpf}</td>
+              <td>{cadastro.dataNascimento}</td>
+              <td>{cadastro.sexo}</td>
+              <td>{cadastro.estado}</td>
+              <td>{cadastro.profissao}</td>
+              <td className='btn-group'>
+                <button className='btn btn-info text-white rounded m-1'>Detalhes</button>
+                <button className='btn btn-primary rounded m-1'>Editar</button>
+                <button className='btn btn-danger rounded m-1'>Deletar</button>
+              </td>
+            </tr>)}
         </tbody>
       </table>
     </>
