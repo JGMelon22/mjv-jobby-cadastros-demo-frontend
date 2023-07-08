@@ -14,6 +14,9 @@ function App() {
   // useState para tratar a mudança de estado feito na aplicação
   const [data, setData] = useState([]);
 
+  // Estado da janela modal de inserção de dados
+  const [modalIncluir, setModalIncluir] = useState(false);
+
   // Cria o estado candidatoSelecionado
   const [cadastroSelecionado, setCadastroSelecionado] = useState(
     {
@@ -40,6 +43,11 @@ function App() {
       pretencaoMaxima: '',
       habilidades: ''
     })
+
+  // Estado da janela para saber se deve fechar ou abrir 
+  const abrirFecharIncluir = () => {
+    setModalIncluir(!modalIncluir);
+  }
 
   // handleChange para guardar os dados do candidato
   // que será informado nos inputs
@@ -109,7 +117,7 @@ function App() {
       </table>
 
       {/* Janela modal para cadastro de um candidato */}
-      <Modal>
+      <Modal isOpen={modalIncluir}>
         <ModalHeader>Cadastrar um candidato</ModalHeader>
         <ModalBody className='form-group'>
           <div className='form-group'>
