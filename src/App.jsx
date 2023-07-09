@@ -18,6 +18,7 @@ function App() {
   const [modalIncluir, setModalIncluir] = useState(false);
   const [modalEditar, setModalEditar] = useState(false);
   const [modalDetalhes, setModalDetalhes] = useState(false);
+  const [modalExcluir, setModalExcluir] = useState(false);
 
   // Cria o estado candidatoSelecionado
   const [candidatoSelecionado, setCandidatoSelecionado] = useState({
@@ -47,9 +48,9 @@ function App() {
 
   // Seleciona o candidato
   const selecionarCandidato = (candidato, opcao) => {
-    setCandidatoSelecionado(candidato);
-    (opcao === "Detalhes")
-      && abrirFecharModalDetalhes();
+    setCandidatoSelecionado(candidato)
+      ? (opcao === "Detalhes") && abrirFecharModalDetalhes()
+      : (opcao === "Excluir") && abrirFecharModalExcluir()
   }
 
   // Estado da janela para saber se deve fechar ou abrir 
@@ -63,6 +64,10 @@ function App() {
 
   const abrirFecharModalDetalhes = () => {
     setModalDetalhes(!modalDetalhes);
+  }
+
+  const abrirFecharModalExcluir = () => {
+    setModalExcluir(!modalExcluir);
   }
 
   // handleChange para guardar os dados do candidato
@@ -426,9 +431,26 @@ function App() {
             <input type='text' className='form-control' name='habilidades' value={candidatoSelecionado && candidatoSelecionado.habilidades} readOnly></input>
           </div>
         </ModalBody>
-
         <ModalFooter>
           <button className='btn btn-secondary m-1' onClick={() => abrirFecharModalDetalhes()}>Fechar</button>
+        </ModalFooter>
+      </Modal>
+
+      <Modal isOpen={modalExcluir}>
+        <ModalHeader>Deletar candidato</ModalHeader>
+        <ModalBody className='form-group'>
+          <div className='form-group'>
+            <label>Id</label>
+            <br />
+            <input type='text' className='form-control' name='idCadastro' value={candidatoSelecionado && candidatoSelecionado.idCadastro}></input>
+            <label>Nome</label>
+            <br />
+            <input type='text' className='form-control' name='nome' value={candidatoSelecionado && candidatoSelecionado.nome}></input>
+          </div>
+        </ModalBody>
+        <ModalFooter>
+          <button className='btn btn-danger m-1' onClick={() => postCandidato()}>Excluir</button>
+          <button className='btn btn-secondary m-1' onClick={() => abrirFecharModalExcluir()}>Cancelar</button>
         </ModalFooter>
       </Modal>
     </>
