@@ -98,6 +98,47 @@ function App() {
       })
   }
 
+  // Requisição Put com o axios
+  const putCandidato = async () => {
+    candidatoSelecionado.salario = parseFloat(candidatoSelecionado.salario);
+    candidatoSelecionado.pretencaoMinima = parseFloat(candidatoSelecionado.pretencaoMinima);
+    candidatoSelecionado.pretencaoMaxima = parseFloat(candidatoSelecionado.pretencaoMaxima);
+
+    await axios.put(baseUrl + "/", candidatoSelecionado.idCadastro)
+      .then(response => {
+        var resposta = response.data;
+        var dadosAuxiliar = data;
+        dadosAuxiliar.map(candidato => {
+          if (candidato.idCadastro === candidatoSelecionado.idCadastro) {
+            candidato.bairro = resposta.bairro;
+            candidato.celular = resposta.celular;
+            candidato.celular_whats = resposta.celular_whats;
+            candidato.cidade = resposta.cidade;
+            candidato.complemento = resposta.complemento;
+            candidato.cpf = resposta.cpf;
+            candidato.data_nascimento = resposta.data_nascimento;
+            candidato.email = resposta.email;
+            candidato.emprego_atual = resposta.emprego_atual;
+            candidato.empresa = resposta.empresa;
+            candidato.estado = resposta.estado;
+            candidato.habilidades = resposta.habilidades;
+            candidato.logradouro = resposta.logradouro;
+            candidato.nome = resposta.nome;
+            candidato.numero = resposta.numero;
+            candidato.pretencao_maxima = resposta.pretencao_maxima;
+            candidato.pretencao_minima = resposta.pretencao_minima;
+            candidato.profissao = resposta.profissao;
+            candidato.salario = resposta.salario;
+            candidato.sexo = resposta.sexo;
+            candidato.telefone = resposta.telefone;
+          }
+        });
+        abrirFecharModalEditar();
+      }).catch(error => {
+        console.log(error);
+      })
+  }
+
   // useEffect lida com efeitos colaterais
   useEffect(() => {
     getCandidatos();
