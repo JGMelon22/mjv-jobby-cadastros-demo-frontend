@@ -148,6 +148,16 @@ function App() {
       })
   }
 
+  const deleteCandidato = async () => {
+    await axios.delete(baseUrl + "/" + candidatoSelecionado.idCadastro)
+      .then(response => {
+        setData(data.filter(candidato => candidato.idCadastro !== response.data));
+        abrirFecharModalExcluir();
+      }).catch(error => {
+        console.log(error);
+      })
+  }
+
   // useEffect lida com efeitos colaterais
   useEffect(() => {
     getCandidatos();
@@ -436,6 +446,7 @@ function App() {
         </ModalFooter>
       </Modal>
 
+      {/* Janela modal para confirmar a deleção de um candidato */}
       <Modal isOpen={modalExcluir}>
         <ModalHeader>Deletar candidato</ModalHeader>
         <ModalBody className='form-group'>
@@ -449,7 +460,7 @@ function App() {
           </div>
         </ModalBody>
         <ModalFooter>
-          <button className='btn btn-danger m-1' onClick={() => postCandidato()}>Excluir</button>
+          <button className='btn btn-danger m-1' onClick={() => deleteCandidato()}>Excluir</button>
           <button className='btn btn-secondary m-1' onClick={() => abrirFecharModalExcluir()}>Cancelar</button>
         </ModalFooter>
       </Modal>
