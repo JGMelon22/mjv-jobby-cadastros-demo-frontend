@@ -20,6 +20,8 @@ function App() {
   const [modalDetalhes, setModalDetalhes] = useState(false);
   const [modalExcluir, setModalExcluir] = useState(false);
 
+  const [updateData, setUpdateData] = useState(true);
+
   // Cria o estado candidatoSelecionado
   const [candidatoSelecionado, setCandidatoSelecionado] = useState({
     idCadastro: '',
@@ -48,9 +50,9 @@ function App() {
 
   // Seleciona o candidato
   const selecionarCandidato = (candidato, opcao) => {
-    setCandidatoSelecionado(candidato)
-      ? (opcao === "Detalhes") && abrirFecharModalDetalhes()
-      : (opcao === "Excluir") && abrirFecharModalExcluir()
+    setCandidatoSelecionado(candidato);
+    (opcao === "Detalhes") ?
+      abrirFecharModalDetalhes() : abrirFecharModalExcluir()
   }
 
   // Estado da janela para saber se deve fechar ou abrir 
@@ -101,6 +103,7 @@ function App() {
     await axios.post(baseUrl, candidatoSelecionado)
       .then(response => {
         setData(data.concat(response.data));
+        setUpdateData(true);
         abrirFecharModalIncluir();
       }).catch(error => {
         console.log(error);
@@ -142,6 +145,7 @@ function App() {
             candidato.telefone = resposta.telefone;
           }
         });
+        setUpdateData(true);
         abrirFecharModalEditar();
       }).catch(error => {
         console.log(error);
@@ -152,6 +156,7 @@ function App() {
     await axios.delete(baseUrl + "/" + candidatoSelecionado.idCadastro)
       .then(response => {
         setData(data.filter(candidato => candidato.idCadastro !== response.data));
+        setUpdateData(true);
         abrirFecharModalExcluir();
       }).catch(error => {
         console.log(error);
@@ -160,8 +165,11 @@ function App() {
 
   // useEffect lida com efeitos colaterais
   useEffect(() => {
-    getCandidatos();
-  })
+    if (updateData) {
+      getCandidatos();
+      setUpdateData(false);
+    }
+  }, [updateData])
 
   return (
     <>
