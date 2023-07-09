@@ -20,31 +20,37 @@ function App() {
   const [modalEditar, setModalEditar] = useState(false);
 
   // Cria o estado candidatoSelecionado
-  const [cadastroSelecionado, setCadastroSelecionado] = useState(
-    {
-      idCadastro: '',
-      nome: '',
-      cpf: '',
-      dataNascimento: '',
-      sexo: '',
-      logradouro: '',
-      numero: '',
-      bairro: '',
-      complemento: '',
-      cidade: '',
-      estado: '',
-      email: '',
-      telefone: '',
-      celular: '',
-      celularWhats: '',
-      profissao: '', //
-      empresa: '',
-      salario: '',
-      empregoAtual: '',
-      pretencaoMinima: '',
-      pretencaoMaxima: '',
-      habilidades: ''
-    })
+  const [candidatoSelecionado, setCandidatoSelecionado] = useState({
+    idCadastro: '',
+    nome: '',
+    cpf: '',
+    dataNascimento: '',
+    sexo: '',
+    logradouro: '',
+    numero: '',
+    bairro: '',
+    complemento: '',
+    cidade: '',
+    estado: '',
+    email: '',
+    telefone: '',
+    celular: '',
+    celularWhats: '',
+    profissao: '',
+    empresa: '',
+    salario: '',
+    empregoAtual: '',
+    pretencaoMinima: '',
+    pretencaoMaxima: '',
+    habilidades: ''
+  })
+
+  // Seleciona o candidato
+  const selecionarCandidato = (candidato, opcao) => {
+    setCandidatoSelecionado(candidato);
+    (opcao === "Editar") &&
+      abrirFecharModalEditar()
+  }
 
   // Estado da janela para saber se deve fechar ou abrir 
   const abrirFecharModalIncluir = () => {
@@ -60,8 +66,8 @@ function App() {
   // e o setCandidatoSelecionado para atualizar o estado
   const handleChange = e => {
     const { name, value, type, checked } = e.target;
-    setCadastroSelecionado({
-      ...cadastroSelecionado,
+    setCandidatoSelecionado({
+      ...candidatoSelecionado,
       [name]: type === 'checkbox' ? (checked ? 1 : 0) : value // Tratativa para componentes que são checkbox)
     });
   }
@@ -78,12 +84,12 @@ function App() {
 
   // Requisição Post com o axios
   const postCandidato = async () => {
-    delete cadastroSelecionado.idCadastro;
-    cadastroSelecionado.salario = parseFloat(cadastroSelecionado.salario);
-    cadastroSelecionado.pretencaoMinima = parseFloat(cadastroSelecionado.pretencaoMinima);
-    cadastroSelecionado.pretencaoMaxima = parseFloat(cadastroSelecionado.pretencaoMaxima);
+    delete candidatoSelecionado.idCadastro;
+    candidatoSelecionado.salario = parseFloat(candidatoSelecionado.salario);
+    candidatoSelecionado.pretencaoMinima = parseFloat(candidatoSelecionado.pretencaoMinima);
+    candidatoSelecionado.pretencaoMaxima = parseFloat(candidatoSelecionado.pretencaoMaxima);
 
-    await axios.post(baseUrl, cadastroSelecionado)
+    await axios.post(baseUrl, candidatoSelecionado)
       .then(response => {
         setData(data.concat(response.data));
         abrirFecharModalIncluir();
@@ -132,8 +138,8 @@ function App() {
               <td>{cadastro.profissao}</td>
               <td className='btn-group'>
                 <button className='btn btn-info text-white rounded m-1'>Detalhes</button>
-                <button className='btn btn-primary rounded m-1' onClick={() => abrirFecharModalEditar()}>Editar</button>
-                <button className='btn btn-danger rounded m-1'>Deletar</button>
+                <button className='btn btn-primary rounded m-1' onClick={() => selecionarCandidato(cadastro, "Editar")}>Editar</button> {" "}
+                <button className='btn btn-danger rounded m-1' onClick={() => selecionarCandidato(cadastro, "Excluir")}>Excluir</button>
               </td>
             </tr>)}
         </tbody>
@@ -224,7 +230,7 @@ function App() {
         <ModalBody className='form-group'>
           <label>Id</label>
           <br />
-          <input type='text' className='form-control' name='idCadastro' value={cadastroSelecionado && cadastroSelecionado.idCadastro} readOnly></input>
+          <input type='text' className='form-control' name='idCadastro' value={candidatoSelecionado && candidatoSelecionado.idCadastro} readOnly></input>
           <div className='form-group'>
             <label>Nome</label>
             <br />
@@ -295,7 +301,7 @@ function App() {
         </ModalBody>
 
         <ModalFooter>
-          <button className='btn btn-primary m-1' onClick={() => putCandidato()}>Editar</button> {" "}
+          <button className='btn btn-primary m-1'>Editar</button> {" "}
           <button className='btn btn-danger m-1' onClick={() => abrirFecharModalEditar()}>Cancelar</button>
         </ModalFooter>
       </Modal>
