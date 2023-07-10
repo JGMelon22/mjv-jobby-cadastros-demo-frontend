@@ -51,9 +51,18 @@ function App() {
   // Seleciona o candidato
   const selecionarCandidato = (candidato, opcao) => {
     setCandidatoSelecionado(candidato);
-    (opcao === "Editar") ?
-      abrirFecharModalEditar() :
+    if (opcao === "Editar") {
+      abrirFecharModalEditar()
+    }
+
+    else if (opcao === "Detalhes") {
+      abrirFecharModalDetalhes();
+    }
+
+    else {
       abrirFecharModalExcluir()
+    }
+
   }
 
   // Estado da janela para saber se deve fechar ou abrir 
@@ -117,7 +126,7 @@ function App() {
     candidatoSelecionado.pretencaoMinima = parseFloat(candidatoSelecionado.pretencaoMinima);
     candidatoSelecionado.pretencaoMaxima = parseFloat(candidatoSelecionado.pretencaoMaxima);
 
-    await axios.put(baseUrl + "/", candidatoSelecionado)
+    await axios.put(baseUrl + "/", candidatoSelecionado.idCadastro)
       .then(response => {
         var resposta = response.data;
         var dadosAuxiliar = data;
