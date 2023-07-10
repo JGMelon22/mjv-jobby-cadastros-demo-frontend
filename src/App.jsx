@@ -51,8 +51,9 @@ function App() {
   // Seleciona o candidato
   const selecionarCandidato = (candidato, opcao) => {
     setCandidatoSelecionado(candidato);
-    (opcao === "Detalhes") ?
-      abrirFecharModalDetalhes() : abrirFecharModalExcluir()
+    (opcao === "Editar") ?
+      abrirFecharModalEditar() :
+      abrirFecharModalExcluir()
   }
 
   // Estado da janela para saber se deve fechar ou abrir 
@@ -116,7 +117,7 @@ function App() {
     candidatoSelecionado.pretencaoMinima = parseFloat(candidatoSelecionado.pretencaoMinima);
     candidatoSelecionado.pretencaoMaxima = parseFloat(candidatoSelecionado.pretencaoMaxima);
 
-    await axios.put(baseUrl + "/", candidatoSelecionado.idCadastro)
+    await axios.put(baseUrl + "/", candidatoSelecionado)
       .then(response => {
         var resposta = response.data;
         var dadosAuxiliar = data;
@@ -206,7 +207,7 @@ function App() {
               <td>{cadastro.profissao}</td>
               <td className='btn-group'>
                 <button className='btn btn-info text-white rounded m-1' onClick={() => selecionarCandidato(cadastro, "Detalhes")}>Detalhes</button>
-                <button className='btn btn-primary rounded m-1' onClick={() => alert("Error com o CORS para realizar PUT") /* {onClick={() => selecionarCandidato(cadastro, "Editar")}*/}>Editar</button> {" "}
+                <button className='btn btn-primary rounded m-1' onClick={() => selecionarCandidato(cadastro, "Editar")}>Editar</button> {" "}
                 <button className='btn btn-danger rounded m-1' onClick={() => selecionarCandidato(cadastro, "Excluir")}>Excluir</button>
               </td>
             </tr>)}

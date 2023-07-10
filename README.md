@@ -6,7 +6,7 @@ Front-end básico para a API de cadastros Jobby
 - Vite
 - JavaScript
 
-![image](https://github.com/JGMelon22/mjv-jobby-cadastros-demo-frontend/assets/73988556/6667600b-2bef-4df6-9922-f59ea064bf67)
+![image](https://github.com/JGMelon22/mjv-jobby-cadastros-demo-frontend/assets/73988556/7cce39da-faf9-4b8b-b088-7c4b445fd5e5)
 
 # Back-end 
 O back-end deste projeto encontra-se aqui: https://github.com/JGMelon22/mjv-jobby-cadastros-demo
