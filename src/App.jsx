@@ -193,7 +193,7 @@ function App() {
       </header>
       <table className='table table-bordered table-hover'>
         <thead>
-          <tr>
+          <tr className='text-center'>
             <th>Id</th>
             <th>Nome</th>
             <th>Cpf</th>
@@ -214,7 +214,7 @@ function App() {
               <td>{cadastro.sexo}</td>
               <td>{cadastro.estado}</td>
               <td>{cadastro.profissao}</td>
-              <td className='btn-group'>
+              <td className='d-flex justify-content-center'>
                 <button className='btn btn-info text-white rounded m-1' onClick={() => selecionarCandidato(cadastro, "Detalhes")}>Detalhes</button>
                 <button className='btn btn-primary rounded m-1' onClick={() => selecionarCandidato(cadastro, "Editar")}>Editar</button> {" "}
                 <button className='btn btn-danger rounded m-1' onClick={() => selecionarCandidato(cadastro, "Excluir")}>Excluir</button>
