@@ -9,7 +9,7 @@ import { useEffect } from 'react';
 function App() {
 
   // URL base
-  const baseUrl = "http://localhost:8080/cadastros";
+  const baseUrl = "http://localhost:8080/api/cadastros";
 
   // useState para tratar a mudança de estado feito na aplicação
   const [data, setData] = useState([]);
@@ -158,7 +158,7 @@ function App() {
         setUpdateData(true);
         abrirFecharModalEditar();
       }).catch(error => {
-        console.log(error);
+        window.alert(error);
       })
   }
 
