@@ -48,6 +48,15 @@ function App() {
     habilidades: ''
   })
 
+  // Formata CPF
+  const formatarCpf = cpf => `${cpf.substring(0, 3)}.${cpf.substring(3, 6)}.${cpf.substring(6, 9)}-${cpf.substring(9)}`;
+
+  // Formata Data Nascimento 
+  const formatarDataNascimento = (dataNascimento) => {
+    const formattedDate = new Date(dataNascimento).toLocaleDateString('pt-BR');
+    return formattedDate;
+  }
+
   // Seleciona o candidato
   const selecionarCandidato = (candidato, opcao) => {
     setCandidatoSelecionado(candidato);
@@ -209,8 +218,8 @@ function App() {
             <tr key={index}>
               <td>{cadastro.idCadastro}</td>
               <td>{cadastro.nome}</td>
-              <td>{cadastro.cpf}</td>
-              <td>{cadastro.dataNascimento}</td>
+              <td>{formatarCpf(cadastro.cpf)}</td>
+              <td>{formatarDataNascimento(cadastro.dataNascimento)}</td>
               <td>{cadastro.sexo}</td>
               <td>{cadastro.estado}</td>
               <td>{cadastro.profissao}</td>
@@ -397,10 +406,10 @@ function App() {
             <input type='text' className='form-control' name='nome' value={candidatoSelecionado && candidatoSelecionado.nome} readOnly></input>
             <label>CPF</label>
             <br />
-            <input type='number' className='form-control' name='cpf' value={candidatoSelecionado && candidatoSelecionado.cpf} readOnly></input>
+            <input type='text' className='form-control' name='cpf' value={candidatoSelecionado && formatarCpf(candidatoSelecionado.cpf)} readOnly></input>
             <label>Data Nascimento</label>
             <br />
-            <input type='text' className='form-control' name='dataNascimento' value={candidatoSelecionado && candidatoSelecionado.dataNascimento} readOnly></input>
+            <input type='text' className='form-control' name='dataNascimento' value={candidatoSelecionado && formatarDataNascimento(candidatoSelecionado.dataNascimento)} readOnly></input>
             <label>Sexo</label>
             <br />
             <input type='text' className='form-control' name='sexo' value={candidatoSelecionado && candidatoSelecionado.sexo} readOnly></input>
