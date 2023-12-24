@@ -480,10 +480,10 @@ function App() {
           <div className='form-group'>
             <label>Id</label>
             <br />
-            <input type='text' className='form-control' name='idCadastro' value={candidatoSelecionado && candidatoSelecionado.idCadastro}></input>
+            <input type='text' className='form-control' name='idCadastro' readOnly value={candidatoSelecionado && candidatoSelecionado.idCadastro}></input>
             <label>Nome</label>
             <br />
-            <input type='text' className='form-control' name='nome' value={candidatoSelecionado && candidatoSelecionado.nome}></input>
+            <input type='text' className='form-control' name='nome' readOnly value={candidatoSelecionado && candidatoSelecionado.nome}></input>
           </div>
         </ModalBody>
         <ModalFooter>
